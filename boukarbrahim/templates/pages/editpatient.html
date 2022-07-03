@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Application Gestion Parking</title>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+<!-- FontAwesome Styles-->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet" />
+
+<link href="{% static 'js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
+<!-- Custom Styles-->
+<link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+<!-- Google Fonts-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="{% static 'js/Lightweight-Chart/cssCharts.css' %}">
+<link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+<style>
+	.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 10px 16px;
+}
+
+.btn-lg {
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #3276b1;
+  border-color: #285e8e;
+}
+
+/***********************
+  RAISED BUTTONS
+************************/
+.btn-primary.raised {
+  box-shadow: 0 3px 0 0 #007299;
+}
+.btn-primary.raised:active, .btn-primary.raised.active {
+  background: #33a6cc;
+  box-shadow: none;
+  margin-bottom: -3px;
+  margin-top: 3px;
+}
+
+/***********************
+  CUSTON BTN VALUES
+************************/
+
+.btn {
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus {
+  outline: 0 none;
+}
+
+.btn-primary {
+  background: #0099cc;
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #33a6cc;
+}
+.btn-primary:active, .btn-primary.active {
+  background: #007299;
+  box-shadow: none;
+}
+</style>
+
+
+
+</head>
+<body>
+	<div id="wrapper">
+		<nav class="navbar navbar-default top-navbar" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img style="position: relative; right: 12px;" src="{% static 'img/parking.png' %}" />
+				<strong style="position: relative; bottom: 30px; left: 25px;">
+				GESTION HOPITAL</strong></a>
+
+				<div id="sideNav">
+					<i class="fa fa-bars icon"></i>
+				</div>
+			</div>
+
+
+		</nav>
+		<!--/. NAV TOP  -->
+		<nav class="navbar-default navbar-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="main-menu">
+
+					<li><a href="#">
+					<img style="position: relative; width: 15px; height: 15px;left: 7px;" src="{% static 'img/cap1.ico' %}" />
+					 <span style="position: relative; left: 25px;">DASHBOARD</span></a></li>
+					<li><a class="active-menu" href="#"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+							Gestion Des Patients </a></li>
+
+
+
+					<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Doctors</a></li>
+					<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Rendez-Vous</a></li>
+					<li><a href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Consultation</a></li>
+
+
+
+
+
+					<li><a href="login.jsp"><i class="fa fa-sign-in" aria-hidden="true"></i>
+							DECONEXION</a></li>
+				</ul>
+
+			</div>
+
+		</nav>
+		<div id="page-wrapper">
+		<div class="container-fluid">
+    <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+
+    </div>
+    <div class="card bg-white">
+        <div class="card-header card-color" style="position:relative;bottom:15px;">
+            <p class="h2 text-center text-uppercase font-weight-bold pt-2">Gestion des Patients</p>
+        </div>
+
+        <div class="card-body container-fluid">
+
+
+
+
+			<form  method="POST" action="{% url 'update_patient' patients.id %}">
+				{% csrf_token %}
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label for="nom">NOM : </label>
+                    <input class="form-control" type="text" value="{{patients.nom}}" id="nom" name="nom">
+
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="prenom">PRENOM : </label>
+                    <input class="form-control" type="text" value="{{patients.prenom}}" id="prenom" name="prenom">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label for="email">EMAIL : </label>
+                    <input class="form-control" type="email" value="{{patients.email}}" id="email" name="email">
+
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="dateN">Date DE NAISSANCE : </label>
+                    <input class="form-control" type="date"  value="{{patients.dateN}}" id="dateN" name="dateN">
+                </div>
+            </div>
+
+
+                    <button type="submit" class="btn btn-warning btn-lg raised" style="position:relative;width:60%;top:20px;left:170px;">UPDATE</button>
+            </form>
+
+
+
+
+
+
+
+
+		</div>
+		</div>
+
+
+
+
+
+		<script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+		<!-- Bootstrap Js -->
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+		<!-- Metis Menu Js -->
+		<script src="{% static 'js/jquery.metisMenu.js' %}"></script>
+		<!-- Morris Chart Js -->
+		<script src="{% static 'js/morris/raphael-2.1.0.min.js' %}"></script>
+		<script src="{% static 'js/morris/morris.js' %}"></script>
+
+
+		<script src="{% static 'js/easypiechart.js' %}"></script>
+		<script src="{% static 'js/easypiechart-data.js' %}"></script>
+
+		<script src="{% static 'js/Lightweight-Chart/jquery.chart.js' %}"></script>
+
+		<!-- Custom Js -->
+		<script src="{% static 'js/custom-scripts.js' %}"></script>
+
+
+		<!-- Chart Js -->
+		<script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/chartjs.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,285 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Application Gestion Parking</title>
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" />
+<!-- FontAwesome Styles-->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet" />
+
+<link href="{% static 'js/morris/morris-0.4.3.min.css' %}" rel="stylesheet" />
+<!-- Custom Styles-->
+<link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+<!-- Google Fonts-->
+<link href='http://fonts.googleapis.com/css?family=Open+Sans'
+	rel='stylesheet' type='text/css' />
+<link rel="stylesheet" href="{% static 'js/Lightweight-Chart/cssCharts.css' %}">
+<link href="{% static 'css/custom-styles.css' %}" rel="stylesheet" />
+<style>
+	.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 10px 16px;
+}
+
+.btn-lg {
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #428bca;
+  border-color: #357ebd;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active,
+.open .dropdown-toggle.btn-primary {
+  color: #fff;
+  background-color: #3276b1;
+  border-color: #285e8e;
+}
+
+/***********************
+  RAISED BUTTONS
+************************/
+.btn-primary.raised {
+  box-shadow: 0 3px 0 0 #007299;
+}
+.btn-primary.raised:active, .btn-primary.raised.active {
+  background: #33a6cc;
+  box-shadow: none;
+  margin-bottom: -3px;
+  margin-top: 3px;
+}
+
+/***********************
+  CUSTON BTN VALUES
+************************/
+
+.btn {
+  padding: 14px 24px;
+  border: 0 none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus {
+  outline: 0 none;
+}
+
+.btn-primary {
+  background: #0099cc;
+  color: #ffffff;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+  background: #33a6cc;
+}
+
+.btn-primary:active, .btn-primary.active {
+  background: #007299;
+  box-shadow: none;
+}
+
+</style>
+
+
+</head>
+<body>
+	<div id="wrapper">
+		<nav class="navbar navbar-default top-navbar" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#"><img style="position: relative; right: 12px;" src="{% static 'img/parking.png' %}" />
+				<strong style="position: relative; bottom: 30px; left: 25px;">
+				GESTION HOPITAL</strong></a>
+
+				<div id="sideNav">
+					<i class="fa fa-bars icon"></i>
+				</div>
+			</div>
+
+
+		</nav>
+		<!--/. NAV TOP  -->
+		<nav class="navbar-default navbar-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav" id="main-menu">
+
+<li><a href="index.html">
+					<img style="position: relative; width: 15px; height: 15px;left: 7px;" src="{% static 'img/cap1.ico' %}" />
+					 <span style="position: relative; left: 25px;">DASHBOARD</span></a></li>
+					<li><a  href="patient.html"><i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+							Gestion Des Patients </a></li>
+
+
+
+					<li><a  href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Doctors</a></li>
+					<li><a href="rendezvous.html"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Rendez-Vous</a></li>
+					<li><a class="active-menu" href="#"><i class="fa fa-map-marker" aria-hidden="true"></i>
+							Gestion Des Consultation</a></li>
+
+
+				</ul>
+
+			</div>
+
+		</nav>
+		<div id="page-wrapper">
+		<div class="container-fluid">
+    <div class="modal fade" id="error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+
+    </div>
+    <div class="card bg-white">
+        <div class="card-header card-color" style="position:relative;bottom:15px;">
+            <p class="h2 text-center text-uppercase font-weight-bold pt-2">Gestion des Consultation</p>
+        </div>
+        <div class="card-body container-fluid">
+
+			<form action="{%url 'add_consultation' %}" method="POST">
+				{% csrf_token %}
+
+
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label for="description">description : </label>
+                    <input class="form-control" type="text" id="description" name="description">
+
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <label for="traitement">traitement : </label>
+                    <input class="form-control" type="text" id="traitement" name="traitement">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 mb-2">
+                    <label for="type">type : </label>
+                    <input class="form-control" type="text" id="type" name="type">
+
+                </div>
+
+            </div>
+				<div class="row">
+				<div class="col-sm-6 mb-2">
+									<label for="type">RENDEZ-VOUS: </label>
+					                  <select class="form-control" aria-label="Default select example" name="idrendezvous_id" id="type">
+										  {% for i in rendez %}
+										<option value="{{i.id}}">{{i.id}}</option>
+										  {% endfor %}
+
+										  </select>
+								</div>
+				</div>
+
+
+                    <button type="submit" class="btn btn-primary btn-lg raised" style="position:relative;width:60%;top:20px;left:170px;">AJOUTER</button>
+			</form>
+
+
+            <div class="row table-responsive m-auto rounded" style="position:relative;top:150px;">
+                <table id="tproduit" class="table table-hover w-100">
+                    <thead>
+                        <tr class="text-uppercase bg-light  w-100">
+                            <th scope="col">#</th>
+                            <th scope="col">description</th>
+							<th scope="col">traitement</th>
+							<th scope="col">type</th>
+							<th scope="col">idrendezvous_id</th>
+                            <th scope="col">Supprimer</th>
+                            <th scope="col">Modifier</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-content">
+					{% for i in consultation %}
+
+					<tr>
+                               <th scope="row">{{i.id}}</th>
+                               <td>{{i.description}}</td>
+                               <td>{{i.traitement}}</td>
+                               <td>{{i.type}}</td>
+						       <td>{{i.idrendezvous_id}}</td>
+						       <td>
+         <a href="{% url 'delete_consultation' i.id %}" class="btn btn-danger" style="position: relative;">
+                                      <i class="fas fa-trash" style="position: relative;right:4px;"></i>Suprimer
+
+                                    </a>
+      </td>
+      <td>
+        <a href="" class="btn btn-success" style="position: relative;">
+                                  <i  style="position: relative;right:4px;"></i>Edit
+                                </a>
+      </td>
+
+    </tr>
+          {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+		</div>
+		</div>
+
+
+
+
+
+		<script src="{% static 'js/jquery-1.10.2.js' %}"></script>
+		<!-- Bootstrap Js -->
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+		<!-- Metis Menu Js -->
+		<script src="{% static 'js/jquery.metisMenu.js' %}"></script>
+		<!-- Morris Chart Js -->
+		<script src="{% static 'js/morris/raphael-2.1.0.min.js' %}"></script>
+		<script src="{% static 'js/morris/morris.js' %}"></script>
+
+
+		<script src="{% static 'js/easypiechart.js' %}"></script>
+		<script src="{% static 'js/easypiechart-data.js' %}"></script>
+
+		<script src="{% static 'js/Lightweight-Chart/jquery.chart.js' %}"></script>
+
+		<!-- Custom Js -->
+		<script src="{% static 'js/custom-scripts.js' %}"></script>
+
+
+		<!-- Chart Js -->
+		<script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/chartjs.js' %}"></script>
+</body>
+</html>
